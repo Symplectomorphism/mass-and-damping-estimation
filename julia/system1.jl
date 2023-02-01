@@ -37,14 +37,16 @@ x = [getindex.(sol.u, 1), getindex.(sol.u, 2), getindex.(sol.u, 3), getindex.(so
 
 # p = plot(sol.t, xtilde.(sol.u, sol.t), linewidth=2, label=L"\tilde{x}", legendfontsize=15)
 # plot!(sol.t, xtildedot.(sol.u, sol.t), linewidth=2, label=L"\frac{d\tilde{x}}{dt}", legendfontsize=15)
-p = plot(sol.t, getindex.(sol.u, 1), linewidth=2, label=L"\tilde{x}", legendfontsize=15)
-plot!(sol.t, getindex.(sol.u, 1), linewidth=2, label=L"\frac{d\tilde{x}}{dt}", legendfontsize=15)
+p = plot(sol.t, getindex.(sol.u, 1), linewidth=2, label=L"x", legendfontsize=15)
+plot!(sol.t, getindex.(sol.u, 1), linewidth=2, label=L"\frac{dx}{dt}", legendfontsize=15)
 plot!(sol.t, getindex.(sol.u, 3), linewidth=2, label=L"\hat{b}", legendfontsize=15)
 plot!(sol.t, getindex.(sol.u, 4), linewidth=2, label=L"\hat{m}", legendfontsize=15)
 savefig(p, "adaptationrule1.pdf")
+savefig(p, "adaptationrule1.png")
 
 p = plot(sol.t, xtilde.(sol.u, sol.t), linewidth=2, label=L"\tilde{x}", legendfontsize=15)
 plot!(sol.t, xtildedot.(sol.u, sol.t), linewidth=2, label=L"\frac{d\tilde{x}}{dt}", legendfontsize=15)
 plot!(sol.t, b.-getindex.(sol.u, 3), linewidth=2, label=L"\tilde{b}", legendfontsize=15)
 plot!(sol.t, m.-getindex.(sol.u, 4), linewidth=2, label=L"\tilde{m}", legendfontsize=15)
 savefig(p, "adaptationrule2.pdf")
+savefig(p, "adaptationrule2.png")
