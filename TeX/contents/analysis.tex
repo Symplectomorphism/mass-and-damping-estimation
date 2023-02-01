@@ -10,8 +10,8 @@ motion is governed by the ODE
 \end{equation}
 %
 where $u(x, \dot{x})$ is a control input that is to be determined for tracking. We are
-uncertain of the true values $m$ and $b$ so we denote our starting guess of them
-as $\hat{m}$ and $\hat{b}$, respectively. Let us introduce the errors in $x$,
+uncertain of the true values $m$ and $b$ so we denote our guesses for them
+by $\hat{m}$ and $\hat{b}$, respectively. Let us introduce the errors in $x$,
 $m$ and $b$ to be \[ \tilde{x} = x - x_r, \quad \tilde{m} = m - \hat{m}, \quad
 \tilde{b} = b - \hat{b}, \] where $x_r$ is a reference signal for the motion of
 the mechanical system. We will postulate update rules for $\hat{m}$ and
@@ -41,7 +41,7 @@ Consider the Lyapunov function candidate
     \label{eq:lyap_cand}
 \end{equation}
 %
-where $k$ is another constant to be determined. This is positive definite
+where $k$ is another constant to be determined. This is a positive definite
 function over the space of $(\tilde{x}, \dot{\tilde{x}}, \tilde{m}, \tilde{b})$.
 We take the time derivative of the Lyapunov function candidate and substitute
 from the system dynamics. We suppress the functional dependence of brevity.
@@ -73,7 +73,7 @@ controller into the expression for $\dot{V}$ gives
 %
 Since we do not know the sign of $\tilde{m}$ or $\tilde{b}$, this expression
 informs the choices of the adaptation laws as
-\[\boxed{f(x, \dot{x}) = -r\left(\ddot{x}_r - \lambda \tilde{x}\right)}, \qquad 
+\[\boxed{f(x, \dot{x}) = -r\left(\ddot{x}_r - \lambda \dot{\tilde{x}}\right)}, \qquad 
 \boxed{g(x, \dot{x}) = -r\left( \dot{x}_r + \dot{\tilde{x}} \right)}. \] yielding a
 negative semidefinite $\dot{V}$:
 \[\dot{V} = -k\lambda^2\tilde{x}^2 - k\dot{\tilde{x}}^2 \leq 0. \]
