@@ -1,0 +1,101 @@
+\section{Analysis} 
+\label{sec:analysis}
+
+We have a linear translational mechanical system with viscous damping, whose
+motion is governed by the ODE
+%
+\begin{equation}
+    m \ddot{x} + b\dot{x} = u(x, \dot{x}),
+    \label{eq:eom}
+\end{equation}
+%
+where $u(x, \dot{x})$ is a control input that is to be determined for tracking. We are
+uncertain of the true values $m$ and $b$ so we denote our starting guess of them
+as $\hat{m}$ and $\hat{b}$, respectively. Let us introduce the errors in $x$,
+$m$ and $b$ to be \[ \tilde{x} = x - x_r, \quad \tilde{m} = m - \hat{m}, \quad
+\tilde{b} = b - \hat{b}, \] where $x_r$ is a reference signal for the motion of
+the mechanical system. We will postulate update rules for $\hat{m}$ and
+$\hat{b}$ and a control law for the mechanical system~\eqref{eq:eom}. The
+combined system has the dynamics
+%
+\begin{align}
+    \begin{split}
+    m\ddot{\tilde{x}} &= u(x, \dot{x}) - m\ddot{x}_r - b(\dot{x}_r + \dot{\tilde{x}}) \\
+    \dot{\hat{m}} &= f(x, \dot{x}) \Rightarrow \dot{\tilde{m}} = -f(x, \dot{x}) \\
+    \dot{\hat{b}} &= g(x, \dot{x}) \Rightarrow \dot{\tilde{b}} = -g(x, \dot{x})
+    \end{split}
+    \label{eq:combined}
+\end{align}
+%
+Let us finally introduce the auxiliary variable $r := \dot{\tilde{x}} + \lambda
+\tilde{x}$, where $\lambda > 0$ is a constant whose value is to be determined.
+Its dynamics is therefore given by \[ m\dot{r} = m\left(\ddot{\tilde{x}} +
+\lambda \dot{\tilde{x}}\right) = u - m(\ddot{x}_r - \lambda\dot{\tilde{x}}) - 
+b(\dot{x}_r + \dot{\tilde{x}}). \]
+
+Consider the Lyapunov function candidate
+%
+\begin{equation}
+    V(\tilde{x}, \dot{\tilde{x}}, \tilde{m}, \tilde{b}) = \frac{1}{2}mr^2 + 
+    k\lambda\tilde{x}^2 + \frac{1}{2}\tilde{m}^2 + \frac{1}{2}\tilde{b}^2,
+    \label{eq:lyap_cand}
+\end{equation}
+%
+where $k$ is another constant to be determined. This is positive definite
+function over the space of $(\tilde{x}, \dot{\tilde{x}}, \tilde{m}, \tilde{b})$.
+We take the time derivative of the Lyapunov function candidate and substitute
+from the system dynamics. We suppress the functional dependence of brevity.
+%
+\begin{align*}
+    \dot{V} &= r\dot{r} + 2k\lambda\tilde{x}\dot{\tilde{x}} - \tilde{m}f -
+    \tilde{b}g, \\
+    &= r\left(u - m\left(\ddot{x}_r - \lambda\dot{\tilde{x}}\right)
+    -b\left(\dot{x}_r + \dot{\tilde{x}} \right)\right) +
+    2k\lambda\tilde{x}\dot{\tilde{x}} - \tilde{m}f - \tilde{b}g.
+\end{align*}
+%
+This expression informs the selection of the control law as \[ \boxed{u(x, 
+\dot{x}) = \hat{m}\left(\ddot{x}_r - \lambda\dot{\tilde{x}}\right) +
+\hat{b}\left(\dot{x}_r + \dot{\tilde{x}}\right) - kr}. \] Substituting this
+controller into the expression for $\dot{V}$ gives
+%
+\begin{align*}
+    \dot{V} &= r\left(-\tilde{m}\left(\ddot{x}_r - \lambda\dot{\tilde{x}}\right) 
+    - \tilde{b}\left(\dot{x}_r+\dot{\tilde{x}}\right)\right) - kr^2 + 
+    2k\lambda\tilde{x}\dot{\tilde{x}} -\tilde{m}f\\ 
+    &{\hspace{5mm}} - \tilde{b}g, \\
+    &= -k\lambda^2\tilde{x}^2 - k\dot{\tilde{x}}^2 -
+    \tilde{m}\left(r\left(\ddot{x}_r - \lambda\dot{\tilde{x}}\right) + f\right)
+    \\
+    &{\hspace{5mm}}-\tilde{b}\left(r\left(\dot{x}_r +
+    \dot{\tilde{x}}\right)+g\right).
+\end{align*}
+%
+Since we do not know the sign of $\tilde{m}$ or $\tilde{b}$, this expression
+informs the choices of the adaptation laws as
+\[\boxed{f(x, \dot{x}) = -r\left(\ddot{x}_r - \lambda \tilde{x}\right)}, \qquad 
+\boxed{g(x, \dot{x}) = -r\left( \dot{x}_r + \dot{\tilde{x}} \right)}. \] yielding a
+negative semidefinite $\dot{V}$:
+\[\dot{V} = -k\lambda^2\tilde{x}^2 - k\dot{\tilde{x}}^2 \leq 0. \]
+%
+It follows that $\tilde{x}, \dot{\tilde{x}}, r \rightarrow 0$ as $t \rightarrow
+\infty$. This means $u(x, \dot{x}) \rightarrow \hat{m}\ddot{x}_r +
+\hat{b}\dot{x}_r$ and $f(x, \dot{x})$, $g(x, \dot{x}) \rightarrow 0$. Hence the
+the set $\Omega_c = \{V(\tilde{x}, \dot{\tilde{x}}, \tilde{m}, \tilde{b}) \leq c 
+\}$ is positively invariant for any $c > 0$. Invoking LaSalle's
+theorem~\cite{khalil2015nonlinear}, we identify $S = \{(\tilde{x},
+\dot{\tilde{x}}) = 0\}$ as the set of all points in $\Omega_c$ where $\dot{V} =
+0$. We now show that for specific choice of reference signal $x_r(t)$, no
+solution can stay identically in $S$ other than the trivial solution
+$(\tilde{x}, \dot{\tilde{x}}, \tilde{m}, \tilde{b}) = (0,0,0,0)$ and invoke
+Corollary 4.1 of~\cite{khalil2015nonlinear} proving that the errors converge to
+zero.
+
+To this end, for any solution that belongs identitcally to $S$, the system
+dynamics yields \[ \tilde{m}\ddot{x}_r + \tilde{b}\dot{x}_r \equiv 0. \] Now,
+choose $\boxed{x_r(t) = A\sin{(\omega t + \varphi)}}$ for some constants $A, \omega >
+0$, and $\varphi$. Then we have 
+\[ -\tilde{m}\omega\sin{\left(\omega t + \varphi\right)} +
+\tilde{b}\cos{\left(\omega t + \varphi\right)} \equiv 0. \] which implies that
+$\tilde{m}, \tilde{b} \equiv 0$. Thus the origin of $(\tilde{x},
+\dot{\tilde{x}}, \tilde{m}, \tilde{b})$ is asymptotically stable.
