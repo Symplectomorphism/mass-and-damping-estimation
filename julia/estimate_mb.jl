@@ -2,9 +2,9 @@ using OrdinaryDiffEq
 using Plots
 using LaTeXStrings
 
-m, b = (0.7, 0.5)
-A0, ω, φ = (0.5, 2*π*0.5, 60*π/180)
-k, λ = (1, 1)
+m, b = (0.7, 4)
+A0, ω, φ = (0.3, 2*π*0.2, 60*π/180)
+k, λ = (1, 4)
 
 xref(t) = A0*sin(ω*t + φ)
 xrefdot(t) = A0*ω*cos(ω*t + φ)
@@ -22,14 +22,14 @@ g(x, t) = -r(x, t)*(xrefddot(t) - λ*xtildedot(x, t))
 function eom!(dx, x, p, t)
     dx[1] = x[2]
     dx[2] = 1/m*(u(x, t) - b*x[2])
-    dx[3] = (x[3] > 0 ? f(x,t) : 1)
-    dx[4] = (x[4] > 0 ? g(x,t) : 1)
-    # dx[3] = f(x,t)
-    # dx[4] = g(x,t)
+    # dx[3] = (x[3] > 0 ? f(x,t) : 1)
+    # dx[4] = (x[4] > 0 ? g(x,t) : 1)
+    dx[3] = f(x,t)
+    dx[4] = g(x,t)
 end
 
 x0 = [0, 0, -0.25, -0.5]
-tspan = (0, 20.0)
+tspan = (0, 100.0)
 prob = ODEProblem(eom!, x0, tspan, saveat=range(tspan[1]; stop=tspan[2], length=1001))
 sol = solve(prob, Tsit5())
 

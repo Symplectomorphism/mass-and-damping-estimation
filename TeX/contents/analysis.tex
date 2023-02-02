@@ -35,16 +35,17 @@ b(\dot{x}_r + \dot{\tilde{x}}). \]
 
 Consider the Lyapunov function candidate
 %
-\begin{equation}
+\begin{equation*}
     V(\tilde{x}, \dot{\tilde{x}}, \tilde{m}, \tilde{b}) = \frac{1}{2}mr^2 + 
     k\lambda\tilde{x}^2 + \frac{1}{2}\tilde{m}^2 + \frac{1}{2}\tilde{b}^2,
-    \label{eq:lyap_cand}
-\end{equation}
+%     \label{eq:lyap_cand}
+\end{equation*}
 %
 where $k$ is another constant to be determined. This is a positive definite
 function over the space of $(\tilde{x}, \dot{\tilde{x}}, \tilde{m}, \tilde{b})$.
 We take the time derivative of the Lyapunov function candidate and substitute
-from the system dynamics. We suppress its functional dependence for brevity.
+from the system dynamics~\eqref{eq:combined}. We suppress its functional
+dependence for brevity.
 %
 \begin{align*}
     \dot{V} &= r\dot{r} + 2k\lambda\tilde{x}\dot{\tilde{x}} +
@@ -54,9 +55,14 @@ from the system dynamics. We suppress its functional dependence for brevity.
     2k\lambda\tilde{x}\dot{\tilde{x}} \\ &\phantom{1234}- \tilde{m}f - \tilde{b}g.
 \end{align*}
 %
-This expression informs the selection of the control law as \[ \boxed{u(x, 
+This expression informs the selection of the control law as 
+\begin{equation}
+\boxed{u(x, 
 \dot{x}) = \hat{m}\left(\ddot{x}_r - \lambda\dot{\tilde{x}}\right) +
-\hat{b}\left(\dot{x}_r + \dot{\tilde{x}}\right) - kr}. \] Substituting this
+\hat{b}\left(\dot{x}_r + \dot{\tilde{x}}\right) - kr}. 
+\label{eq:controller}
+\end{equation}
+Substituting this
 controller into the expression for $\dot{V}$ gives
 %
 \begin{align*}
@@ -75,8 +81,12 @@ controller into the expression for $\dot{V}$ gives
 %
 Since we do not know the sign of $\tilde{m}$ or $\tilde{b}$, this expression
 informs the choices of the adaptation laws as
-\[\boxed{f(x, \dot{x}) = -r\left(\ddot{x}_r - \lambda \dot{\tilde{x}}\right)}, \qquad 
-\boxed{g(x, \dot{x}) = -r\left( \dot{x}_r + \dot{\tilde{x}} \right)}. \] yielding a
+\begin{equation}
+\boxed{f(x, \dot{x}) = -r\left(\ddot{x}_r - \lambda \dot{\tilde{x}}\right)}, \quad 
+\boxed{g(x, \dot{x}) = -r\left( \dot{x}_r + \dot{\tilde{x}} \right)}.
+\label{eq:adaptation}
+\end{equation}
+yielding a
 negative semidefinite $\dot{V}$:
 \[\dot{V} = -k\lambda^2\tilde{x}^2 - k\dot{\tilde{x}}^2 \leq 0. \]
 %
@@ -97,10 +107,11 @@ To this end, for any solution that belongs identically to $S$, the system
 dynamics yields \[ \tilde{m}\ddot{x}_r + \tilde{b}\dot{x}_r \equiv 0, \qquad
 \dot{\tilde{m}} \equiv \dot{\tilde{b}} \equiv 0. \] Now,
 choose $\boxed{x_r(t) = A\sin{(\omega t + \varphi)}}$ for some constants $A,
-\omega > 0$, and $\varphi$. With $\theta(t) = \omega t + \varphi$, we have \[
-\tilde{m}\omega\sin{\theta(t)} - \tilde{b}\cos{\theta(t)} = \bmat{\sin{\theta(t)} &
--\cos{\theta(t)}}\bmat{\tilde{m}\omega \\ \tilde{b}} \equiv 0, \] for all $t > 0$.
-This implies that $\tilde{m}, \tilde{b} \equiv 0$ because $\tilde{m}$ and
-$\tilde{b}$ must be constants within $S$. Thus the origin of $(\tilde{x},
-\dot{\tilde{x}}, \tilde{m}, \tilde{b})$ is globally asymptotically stable.
-\hfill $\blacksquare$
+\omega > 0$, and $\varphi$ (or any time function with a nontrivial second
+derivative). With $\theta(t) = \omega t + \varphi$, we have \[
+\tilde{m}\omega\sin{\theta(t)} - \tilde{b}\cos{\theta(t)} =
+\bmat{\sin{\theta(t)} & -\cos{\theta(t)}}\bmat{\tilde{m}\omega \\ \tilde{b}}
+\equiv 0, \] for all $t > 0$. This implies that $\tilde{m}, \tilde{b} \equiv 0$
+because $\tilde{m}$ and $\tilde{b}$ must be constants within $S$. Thus the
+origin of $(\tilde{x}, \dot{\tilde{x}}, \tilde{m}, \tilde{b})$ is globally
+asymptotically stable. \hfill $\blacksquare$
