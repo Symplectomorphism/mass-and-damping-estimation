@@ -44,14 +44,14 @@ Consider the Lyapunov function candidate
 where $k$ is another constant to be determined. This is a positive definite
 function over the space of $(\tilde{x}, \dot{\tilde{x}}, \tilde{m}, \tilde{b})$.
 We take the time derivative of the Lyapunov function candidate and substitute
-from the system dynamics. We suppress the functional dependence of brevity.
+from the system dynamics. We suppress its functional dependence for brevity.
 %
 \begin{align*}
-    \dot{V} &= r\dot{r} + 2k\lambda\tilde{x}\dot{\tilde{x}} - \tilde{m}f -
-    \tilde{b}g, \\
+    \dot{V} &= r\dot{r} + 2k\lambda\tilde{x}\dot{\tilde{x}} +
+    \tilde{m}\dot{\tilde{m}} + \tilde{b}\dot{\tilde{b}}, \\
     &= r\left(u - m\left(\ddot{x}_r - \lambda\dot{\tilde{x}}\right)
     -b\left(\dot{x}_r + \dot{\tilde{x}} \right)\right) +
-    2k\lambda\tilde{x}\dot{\tilde{x}} - \tilde{m}f - \tilde{b}g.
+    2k\lambda\tilde{x}\dot{\tilde{x}} \\ &\phantom{1234}- \tilde{m}f - \tilde{b}g.
 \end{align*}
 %
 This expression informs the selection of the control law as \[ \boxed{u(x, 
@@ -60,15 +60,17 @@ This expression informs the selection of the control law as \[ \boxed{u(x,
 controller into the expression for $\dot{V}$ gives
 %
 \begin{align*}
+\!\begin{aligned}[t]
     \dot{V} &= r\left(-\tilde{m}\left(\ddot{x}_r - \lambda\dot{\tilde{x}}\right) 
-    - \tilde{b}\left(\dot{x}_r+\dot{\tilde{x}}\right)\right) - kr^2 + 
-    2k\lambda\tilde{x}\dot{\tilde{x}} -\tilde{m}f\\ 
-    &{\hspace{5mm}} - \tilde{b}g, \\
-    &= -k\lambda^2\tilde{x}^2 - k\dot{\tilde{x}}^2 -
+    - \tilde{b}\left(\dot{x}_r+\dot{\tilde{x}}\right)\right) - kr^2
+    + 2k\lambda\tilde{x}\dot{\tilde{x}} \\
+            &\phantom{1234} -\tilde{m}f - \tilde{b}g, \\
+            &= -k\lambda^2\tilde{x}^2 - k\dot{\tilde{x}}^2 -
     \tilde{m}\left(r\left(\ddot{x}_r - \lambda\dot{\tilde{x}}\right) + f\right)
     \\
-    &{\hspace{5mm}}-\tilde{b}\left(r\left(\dot{x}_r +
+            &\phantom{1234} -\tilde{b}\left(r\left(\dot{x}_r +
     \dot{\tilde{x}}\right)+g\right).
+\end{aligned}
 \end{align*}
 %
 Since we do not know the sign of $\tilde{m}$ or $\tilde{b}$, this expression
@@ -85,7 +87,7 @@ invariant for any $c > 0$. Moreover, $\tilde{x}, \dot{\tilde{x}}, r \rightarrow
 \hat{m}\ddot{x}_r + \hat{b}\dot{x}_r$ and $f(x, \dot{x})$, $g(x, \dot{x})
 \rightarrow 0$. We identify $S = \{(\tilde{x}, \dot{\tilde{x}}, \tilde{m},
 \tilde{b}): (\tilde{x}, \dot{\tilde{x}}) = 0\}$ as the set of all points in
-$\Omega_c$ where $\dot{V} = 0$. We now show that for specific choice of
+$\Omega_c$ where $\dot{V} = 0$. We now show that for a specific choice of the
 reference signal $x_r(t)$, no solution can stay identically in $S$ other than
 the trivial solution $(\tilde{x}, \dot{\tilde{x}}, \tilde{m}, \tilde{b}) =
 (0,0,0,0)$ and invoke Corollary 4.1 of~\cite{khalil2015nonlinear} proving that
