@@ -2,8 +2,8 @@ using OrdinaryDiffEq
 using Plots
 using LaTeXStrings
 
-m, b = (0.7, 4)
-A0, ω, φ = (0.3, 2*π*0.2, 60*π/180)
+m, b = (0.75, 1.22)
+A0, ω, φ = (0.3, 2*π*0.3, 0*π/180)
 k, λ = (1, 4)
 
 xref(t) = A0*sin(ω*t + φ)
@@ -29,24 +29,24 @@ function eom!(dx, x, p, t)
 end
 
 x0 = [0, 0, -0.25, -0.5]
-tspan = (0, 100.0)
+tspan = (0, 32.5)
 prob = ODEProblem(eom!, x0, tspan, saveat=range(tspan[1]; stop=tspan[2], length=1001))
 sol = solve(prob, Tsit5())
 
 x = [getindex.(sol.u, 1), getindex.(sol.u, 2), getindex.(sol.u, 3), getindex.(sol.u, 4)]
 
-# p = plot(sol.t, xtilde.(sol.u, sol.t), linewidth=2, label=L"\tilde{x}", legendfontsize=15)
-# plot!(sol.t, xtildedot.(sol.u, sol.t), linewidth=2, label=L"\frac{d\tilde{x}}{dt}", legendfontsize=15)
-p = plot(sol.t, getindex.(sol.u, 1), linewidth=2, label=L"x", legendfontsize=15)
-plot!(sol.t, getindex.(sol.u, 1), linewidth=2, label=L"\frac{dx}{dt}", legendfontsize=15)
-plot!(sol.t, getindex.(sol.u, 3), linewidth=2, label=L"\hat{b}", legendfontsize=15)
-plot!(sol.t, getindex.(sol.u, 4), linewidth=2, label=L"\hat{m}", legendfontsize=15)
+p = plot(sol.t, xtilde.(sol.u, sol.t), linewidth=2, label=L"\tilde{x}", legendfontsize=15, linecolor=RGB{Float64}(0., 0.4470, 0.7410))
+plot!(sol.t, xtildedot.(sol.u, sol.t), linewidth=2, label=L"\frac{d\tilde{x}}{dt}", legendfontsize=15, linecolor=RGB{Float64}(0.8500, 0.3250, 0.0980))
+# p = plot(sol.t, getindex.(sol.u, 1), linewidth=2, label=L"x", legendfontsize=15)
+# plot!(sol.t, getindex.(sol.u, 1), linewidth=2, label=L"\frac{dx}{dt}", legendfontsize=15)
+plot!(sol.t, getindex.(sol.u, 4), linewidth=2, label=L"\hat{m}", legendfontsize=15, linecolor=RGB{Float64}(0.9290, 0.6940, 0.1250))
+plot!(sol.t, getindex.(sol.u, 3), linewidth=2, label=L"\hat{b}", legendfontsize=15, legend=:bottomright, linecolor=RGB{Float64}(0.4940, 0.1840, 05560))
 savefig(p, "adaptationrule1.pdf")
 savefig(p, "adaptationrule1.png")
 
 p = plot(sol.t, xtilde.(sol.u, sol.t), linewidth=2, label=L"\tilde{x}", legendfontsize=15)
 plot!(sol.t, xtildedot.(sol.u, sol.t), linewidth=2, label=L"\frac{d\tilde{x}}{dt}", legendfontsize=15)
-plot!(sol.t, b.-getindex.(sol.u, 3), linewidth=2, label=L"\tilde{b}", legendfontsize=15)
 plot!(sol.t, m.-getindex.(sol.u, 4), linewidth=2, label=L"\tilde{m}", legendfontsize=15)
+plot!(sol.t, b.-getindex.(sol.u, 3), linewidth=2, label=L"\tilde{b}", legendfontsize=15)
 savefig(p, "adaptationrule2.pdf")
 savefig(p, "adaptationrule2.png")
